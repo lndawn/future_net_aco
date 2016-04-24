@@ -1,0 +1,29 @@
+﻿生成启动时间为 2016/4/11 23:10:59。
+     1>项目“F:\华为软件大赛\ACOtest\tslyc_acoV2.5_两点之间最短路径\tslyc_aco\tslyc_aco.vcxproj”在节点 2 上(build 个目标)。
+     1>InitializeBuildStatus:
+         正在创建“Debug\tslyc_aco.unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+       ClCompile:
+         E:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Main.cpp
+         Main.cpp
+     1>f:\华为软件大赛\acotest\tslyc_acov2.5_两点之间最短路径\tslyc_aco\main.cpp(33): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+       ManifestResourceCompile:
+         所有输出均为最新。
+       Link:
+         E:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\华为软件大赛\ACOtest\tslyc_acoV2.5_两点之间最短路径\Debug\tslyc_aco.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\tslyc_aco.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"F:\华为软件大赛\ACOtest\tslyc_acoV2.5_两点之间最短路径\Debug\tslyc_aco.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\华为软件大赛\ACOtest\tslyc_acoV2.5_两点之间最短路径\Debug\tslyc_aco.lib" /MACHINE:X86 Debug\tslyc_aco.exe.embed.manifest.res
+         Debug\io.obj
+         Debug\Main.obj
+         Debug\myFunc.obj
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\tslyc_aco.exe.embed.manifest" /manifest Debug\tslyc_aco.exe.intermediate.manifest
+         所有输出均为最新。
+       LinkEmbedManifest:
+         所有输出均为最新。
+         tslyc_aco.vcxproj -> F:\华为软件大赛\ACOtest\tslyc_acoV2.5_两点之间最短路径\Debug\tslyc_aco.exe
+       FinalizeBuildStatus:
+         正在删除文件“Debug\tslyc_aco.unsuccessfulbuild”。
+         正在对“Debug\tslyc_aco.lastbuildstate”执行 Touch 任务。
+     1>已完成生成项目“F:\华为软件大赛\ACOtest\tslyc_acoV2.5_两点之间最短路径\tslyc_aco\tslyc_aco.vcxproj”(build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:01.41

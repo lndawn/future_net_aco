@@ -1,0 +1,159 @@
+void Update_Best_Route(T_Node Head,A_Node Ants,Info_Node& info){
+	short visitCount=0;
+	short left_dist=0;
+	short right_dist=0;
+	short left_endNode;
+	short leftRout[600];
+	short rightRout[600];
+	short orig_dist=0;
+	short start_Position=0;
+	double* transfer; 
+	memset(leftRout,-1,600);
+	memset(rightRout,-1,600);
+	Ant_Init(Ants,info); 
+	//int roulette0 = Get_Random(0, info.bestLength-1);
+	int roulette0=Get_Random(0, info.bestLength-1);
+	int i=0;
+	int k=0;
+	for(int j=roulette0;j>0;j--){
+		if(Check_Visit(Head,info.bestRout[j])){//将路由表进行分割，左边路由表的position为roulette
+			start_Position=j;
+			visitCount++;
+			break;
+		}
+	}
+	for(i=0;i<start_Position;i++)
+	{
+		leftRout[i]=info.bestRout[i];
+		left_dist+=info.distances.data[info.bestRout[i]][info.bestRout[i+1]];
+	}
+	leftRout[i]=info.bestRout[i];
+	orig_dist=info.distances.data[info.bestRout[i]][info.bestRout[i+1]];//需要比较的距离
+	i++;
+	while(Check_Visit(Head,info.bestRout[i])==false && i<info.bestLength-1)//统计两个优化位置之间的间距
+	{
+		orig_dist+=info.distances.data[info.bestRout[i]][info.bestRout[i+1]];
+		visitCount++;
+		i++;
+		
+	}
+	if(visitCount>3){
+		left_endNode=info.bestRout[i];
+		while(i<info.bestLength-1){//右边路由表的起点为优化间距的右端点
+			rightRout[k]=info.bestRout[i];
+			right_dist+=info.distances.data[info.bestRout[i]][info.bestRout[i+1]];
+			i++;
+			k++;
+		}
+		(Ants+0)->dist=left_dist;
+		while((Ants+0)->posi!=start_Position){
+			(Ants+0)->rout[(Ants+i)->posi]=leftRout[(Ants+0)->posi];
+			(Ants+0)->node[leftRout[(Ants+0)->posi]] = ANT_GOST;        //添加到已经过
+			(Ants+0)->posi += 1;
+		}
+		for(int j=0;j<=k;j++){
+			(Ants+0)->tabu[j]=rightRout[j];
+			(Ants+0)->node[rightRout[j]] = ANT_TABU;
+		}
+		rightRout[k]=info.bestRout[i];
+		(Ants+0)->rout[(Ants+0)->posi]=leftRout[(Ants+0)->posi];
+		(Ants+0)->node[leftRout[(Ants+0)->posi]] = ANT_GOST; 
+		(Ants+1)->rout[(Ants+1)->posi]=leftRout[(Ants+0)->posi];
+		cout<<(Ants+1)->rout[(Ants+1)->posi]<<" "<<leftRout[(Ants+0)->posi]<<endl;
+		int best=MAX_DIST_VAL;
+		int next=1;
+		int i=2;
+		int m,n,temp;
+		int nextDist;
+		int count;
+		ofstream fp;
+		fp.open("result1.txt");
+		while(true){
+			int position=(Ants+next)->rout[(Ants+next)->posi];
+			count = 0;
+			for (int j = 0; j < getNode(Head,position,NODE_NUMBER); j++){//获取当前节点的出度值
+				temp=0;
+				n=0;
+				short idata = getSubNode(Head,position,j,SUB_NODE_NEXT);// 获取出度j尾节点的值
+				if (Check_Visit(Ants,0,idata)==false && Check_Tabu(Ants,0,idata)==false && Check_Visit(Ants,next,idata)==false){
+					if(info.distances.data[position][idata]>0){
+						while(n<i){
+							n++;
+							if(idata==(Ants+next)->rout[(Ants+next)->posi]){
+								if(((Ants+next)->dist+info.distances.data[position][idata])<(Ants+i)->dist){
+									for(m=0;m<=(Ants+next)->posi;m++){
+											(Ants+n)->rout[m]=(Ants+next)->rout[m];
+											(Ants+n)->node[(Ants+n)->rout[m]]=ANT_GOST;
+										}
+										(Ants+n)->dist=(Ants+next)->dist;
+										(Ants+n)->rout[m]=idata;
+										(Ants+n)->node[idata]=ANT_GOST;
+										(Ants+n)->posi=n;
+									}
+								temp=1;
+								break;
+							}
+						}
+							if(temp==0){
+								if(count==0){
+									(Ants+next)->posi += 1;
+									(Ants+next)->rout[(Ants+next)->posi]=idata;
+									(Ants+next)->node[idata]=ANT_GOST;
+									nextDist=info.distances.data[position][idata];
+									cout<<(Ants+next)->rout[(Ants+next)->posi]<<endl;
+								}
+								else{
+									for(m=0;m<=(Ants+next)->posi;m++){
+										(Ants+i)->rout[m]=(Ants+next)->rout[m];
+										(Ants+i)->node[(Ants+i)->rout[m]]=ANT_GOST;
+									}
+									(Ants+i)->posi=m;
+									(Ants+i)->rout[(Ants+i)->posi]=idata;
+									(Ants+i)->node[idata]=ANT_GOST;
+									cout<<(Ants+i)->rout[(Ants+i)->posi]<<endl;
+									(Ants+i)->dist=(Ants+next)->dist+info.distances.data[position][idata];
+									i++;
+								}
+								count++;
+							}
+							else
+								continue;
+					}
+				}
+			}
+			(Ants+next)->dist += nextDist;
+			n=1;
+			best=MAX_DIST_VAL;
+			while(n<i){
+				if((Ants+n)->dist<best && Check_Visit(Ants,0,(Ants+n)->rout[(Ants+n)->posi])==false){
+					next=n;
+					best=(Ants+n)->dist;
+				}
+				n++;
+			}
+			(Ants+0)->posi += 1;
+			(Ants+0)->rout[(Ants+0)->posi]=(Ants+next)->rout[(Ants+next)->posi];
+			(Ants+0)->node[(Ants+0)->rout[(Ants+0)->posi]]=ANT_GOST;
+			cout<<(Ants+next)->rout[(Ants+next)->posi]<<" "<<(Ants+next)->dist<<" "<<next<<" "<<left_endNode<<endl;
+			if((Ants+next)->rout[(Ants+next)->posi]==left_endNode)
+			{
+				cout<<(Ants+next)->rout[(Ants+next)->posi]<<"安全退出"<<left_endNode<<endl;
+				break;
+			}
+		}
+		if((Ants+next)->dist<orig_dist){
+			int r=1;
+			int i;
+			for(i=1;i<=(Ants+next)->posi;i++){
+				info.bestRout[start_Position+i]=(Ants+next)->rout[i];
+				i++;
+			}
+			while(rightRout[r]!=-1){
+				info.bestRout[start_Position+i]=rightRout[r];
+				i++;
+				r++;
+			}
+			info.bestDist=left_dist+(Ants+next)->dist+right_dist;
+		}
+	}			
+}
